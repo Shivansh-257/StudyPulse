@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyPulse | Student Academic Operations & Productivity Suite</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-300">
+
+    <!-- TOP HEADER BAR -->
+    <header class="sticky top-0 z-40 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-4 py-3 flex items-center justify-between">
+        <!-- Left: Profile Avatar trigger -->
+        <div class="flex items-center gap-3">
+            <button onclick="openProfileModal()" class="w-10 h-10 rounded-full bg-indigo-600 hover:bg-indigo-500 font-bold text-white flex items-center justify-center shadow-lg transition transform hover:scale-105 focus:outline-none">
+                <span id="userAvatarInitial">S</span>
+            </button>
+            <div>
+                <h1 class="font-bold text-base leading-tight" id="headerAppName">StudyPulse</h1>
+                <p class="text-xs text-slate-400 truncate max-w-[180px] sm:max-w-xs" id="headerSubtitle">B.Tech CSE KPMG • Roll: 124396</p>
+            </div>
+        </div>
+
+        <!-- Right: Non-wrapping quick badges & Dark mode switch -->
+        <div class="flex items-center gap-2 sm:gap-3">
+            <!-- Quick stats badges (Non-wrapping) -->
+            <div class="hidden md:flex items-center gap-2">
+                <span class="inline-flex items-center gap-1 bg-slate-800/80 border border-slate-700/60 px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap text-indigo-300">
+                    <i data-lucide="check-square" class="w-3.5 h-3.5"></i> <span id="badgeTaskCount">1</span> Tasks
+                </span>
+                <span class="inline-flex items-center gap-1 bg-slate-800/80 border border-slate-700/60 px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap text-amber-300">
+                    <i data-lucide="clock" class="w-3.5 h-3.5"></i> 5 Days to OS
+                </span>
+                <span class="inline-flex items-center gap-1 bg-slate-800/80 border border-slate-700/60 px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap text-emerald-300">
+                    <i data-lucide="zap" class="w-3.5 h-3.5"></i> 25m Focus
+                </span>
+            </div>
+
+            <!-- Theme Toggle -->
+            <button onclick="toggleTheme()" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition focus:outline-none" title="Toggle Theme">
+                <i data-lucide="moon" id="themeIcon" class="w-5 h-5"></i>
+            </button>
+
+            <!-- Quick Settings Dropdown Trigger -->
+            <button onclick="openSettingsModal()" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition focus:outline-none" title="Settings">
+                <i data-lucide="settings" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 pb-24 max-w-7xl w-full mx-auto p-4 sm:p-6">
+        
+        <!-- TAB 1: OVERVIEW -->
+        <section id="tab-overview" class="space-y-6">
+            <div class="bg-gradient-to-r from-indigo-900/40 via-slate-900 to-purple-900/40 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+                <div class="relative z-10">
+                    <span class="bg-indigo-500/20 text-indigo-300 text-xs px-3 py-1 rounded-full font-semibold border border-indigo-500/30">Semester 1 • Academic Hub</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mt-3 tracking-tight" id="welcomeTitle">Welcome back, Shivansh!</h2>
+                    <p class="text-slate-400 text-sm mt-1 max-w-xl">Manage your B.Tech Computer Science & Engineering (KPMG Specialization) coursework, assignments, and exam prep seamlessly.</p>
+                </div>
+            </div>
+
+            <!-- Quick Stats Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl shadow">
+                    <p class="text-xs text-slate-400 font-medium">Pending Tasks</p>
+                    <h3 class="text-2xl font-bold mt-1 text-indigo-400" id="statTaskCount">1</h3>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl shadow">
+                    <p class="text-xs text-slate-400 font-medium">Active Exams</p>
+                    <h3 class="text-2xl font-bold mt-1 text-amber-400" id="statExamCount">3</h3>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl shadow">
+                    <p class="text-xs text-slate-400 font-medium">Focus Logged Today</p>
+                    <h3 class="text-2xl font-bold mt-1 text-emerald-400" id="statFocusMinutes">25m</h3>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl shadow">
+                    <p class="text-xs text-slate-400 font-medium">Vault Resources</p>
+                    <h3 class="text-2xl font-bold mt-1 text-purple-400" id="statVaultCount">4</h3>
+                </div>
+            </div>
+
+            <!-- Quick Access / Recent Notes preview -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-lg flex items-center gap-2"><i data-lucide="clock" class="w-5 h-5 text-indigo-400"></i> Upcoming Deadlines</h3>
+                        <button onclick="switchTab('exams')" class="text-xs text-indigo-400 hover:underline">View all</button>
+                    </div>
+                    <div class="space-y-3" id="overviewExamsList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-lg flex items-center gap-2"><i data-lucide="check-square" class="w-5 h-5 text-emerald-400"></i> Priority Tasks</h3>
+                        <button onclick="switchTab('tasks')" class="text-xs text-indigo-400 hover:underline">Manage</button>
+                    </div>
+                    <div class="space-y-3" id="overviewTasksList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: EXAMS & SYLLABUS -->
+        <section id="tab-exams" class="space-y-6 hidden">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold">Exams & Syllabus Hub</h2>
+                    <p class="text-slate-400 text-sm">Track your exam dates and manage syllabus topics with interactive progress bars.</p>
+                </div>
+                <button onclick="openAddExamModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 shadow-lg transition">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Add Exam
+                </button>
+            </div>
+
+            <!-- Exams Grid Container -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="examsContainer">
+                <!-- Rendered dynamically -->
+            </div>
+        </section>
+
+        <!-- TAB 3: TASKS & DELIVERABLES -->
+        <section id="tab-tasks" class="space-y-6 hidden">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold">Deliverables & Tasks</h2>
+                    <p class="text-slate-400 text-sm">Stay on top of assignments, project deliverables, and weekly goals.</p>
+                </div>
+                <button onclick="openAddTaskModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 shadow-lg transition">
+                    <i data-lucide="plus" class="w-4 h-4"></i> New Task
+                </button>
+            </div>
+
+            <!-- Task Filter Tabs -->
+            <div class="flex gap-2 border-b border-slate-800 pb-2">
+                <button onclick="filterTasks('all')" id="filter-all" class="px-4 py-1.5 rounded-lg text-sm font-medium bg-indigo-600 text-white">All Tasks</button>
+                <button onclick="filterTasks('pending')" id="filter-pending" class="px-4 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">Pending</button>
+                <button onclick="filterTasks('completed')" id="filter-completed" class="px-4 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">Completed</button>
+            </div>
+
+            <!-- Task List Container -->
+            <div class="space-y-3" id="tasksContainer">
+                <!-- Rendered dynamically -->
+            </div>
+        </section>
+
+        <!-- TAB 4: POMODORO FOCUS HUB -->
+        <section id="tab-focus" class="space-y-6 hidden">
+            <div class="text-center max-w-xl mx-auto space-y-2">
+                <h2 class="text-2xl font-bold">Pomodoro Focus Hub</h2>
+                <p class="text-slate-400 text-sm">Boost deep work sessions for C programming, algorithms, and project sprints.</p>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-10 max-w-md mx-auto shadow-2xl text-center space-y-6">
+                <!-- Mode Selector -->
+                <div class="flex justify-center gap-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
+                    <button onclick="setFocusMode('pomodoro')" id="mode-pomodoro" class="flex-1 py-2 rounded-lg text-xs font-semibold bg-indigo-600 text-white transition">Pomodoro (25m)</button>
+                    <button onclick="setFocusMode('shortBreak')" id="mode-shortBreak" class="flex-1 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">Short Break (5m)</button>
+                    <button onclick="setFocusMode('longBreak')" id="mode-longBreak" class="flex-1 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">Long Break (15m)</button>
+                </div>
+
+                <!-- Timer Display -->
+                <div class="py-8">
+                    <span id="timerDisplay" class="text-6xl sm:text-7xl font-extrabold tracking-wider font-mono text-indigo-400">25:00</span>
+                </div>
+
+                <!-- Timer Controls -->
+                <div class="flex justify-center gap-4">
+                    <button onclick="toggleTimer()" id="timerToggleBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg transition flex items-center gap-2">
+                        <i data-lucide="play" class="w-5 h-5" id="timerIcon"></i> <span id="timerBtnText">Start Focus</span>
+                    </button>
+                    <button onclick="resetTimer()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-5 py-3 rounded-xl font-semibold transition">
+                        <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: ACADEMIC VAULT -->
+        <section id="tab-vault" class="space-y-6 hidden">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold">Academic Vault</h2>
+                    <p class="text-slate-400 text-sm">Store lecture PDFs, code repositories, and reference links.</p>
+                </div>
+                <button onclick="openAddResourceModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 shadow-lg transition">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Add Resource
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="vaultContainer">
+                <!-- Rendered dynamically -->
+            </div>
+        </section>
+
+        <!-- TAB 6: QUICK NOTES -->
+        <section id="tab-notes" class="space-y-6 hidden">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold">Quick Notes & Scratchpad</h2>
+                    <p class="text-slate-400 text-sm">Auto-saved notes for lecture reminders and exam prep.</p>
+                </div>
+                <button onclick="saveNotesManually()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 shadow transition">
+                    <i data-lucide="save" class="w-4 h-4"></i> Save Notes
+                </button>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
+                <textarea id="notesArea" oninput="autoSaveNotes()" class="w-full h-96 bg-slate-950 text-slate-100 placeholder-slate-500 border border-slate-800 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono text-sm resize-none" placeholder="Type your notes here..."></textarea>
+                <div class="flex justify-between items-center mt-3 text-xs text-slate-500 px-1">
+                    <span id="notesStatus">Auto-saved to local storage</span>
+                    <span>Markdown supported</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MOBILE BOTTOM NAVIGATION BAR -->
+    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/90 backdrop-blur-md border-t border-slate-800 px-2 py-2 flex justify-around items-center">
+        <button onclick="switchTab('overview')" id="nav-overview" class="flex flex-col items-center gap-1 text-indigo-400 transition nav-btn p-1">
+            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">Overview</span>
+        </button>
+        <button onclick="switchTab('exams')" id="nav-exams" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition nav-btn p-1">
+            <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">Exams</span>
+        </button>
+        <button onclick="switchTab('tasks')" id="nav-tasks" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition nav-btn p-1">
+            <i data-lucide="check-square" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">Tasks</span>
+        </button>
+        <button onclick="switchTab('focus')" id="nav-focus" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition nav-btn p-1">
+            <i data-lucide="timer" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">Focus</span>
+        </button>
+        <button onclick="switchTab('vault')" id="nav-vault" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition nav-btn p-1">
+            <i data-lucide="folder-archive" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">Vault</span>
+        </button>
+        <button onclick="switchTab('notes')" id="nav-notes" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition nav-btn p-1">
+            <i data-lucide="file-text" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">Notes</span>
+        </button>
+    </nav>
+
+    <!-- PROFILE MODAL (YouTube/Instagram style avatar modal) -->
+    <div id="profileModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-5 relative">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-lg">Student Profile</h3>
+                <button onclick="closeProfileModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            
+            <div class="flex items-center gap-4 pb-4 border-b border-slate-800">
+                <div class="w-16 h-16 rounded-full bg-indigo-600 text-white text-2xl font-bold flex items-center justify-center" id="modalAvatarPreview">S</div>
+                <div>
+                    <h4 class="font-bold text-base" id="previewName">Shivansh Sharma</h4>
+                    <p class="text-xs text-slate-400">B.Tech CSE (KPMG) • Section A1</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Full Name</label>
+                    <input type="text" id="profileNameInput" class="w-full bg-slate-950 text-slate-100 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Roll Number / Student ID</label>
+                    <input type="text" id="profileRollInput" class="w-full bg-slate-950 text-slate-100 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Branch / Specialization</label>
+                    <input type="text" id="profileBranchInput" class="w-full bg-slate-950 text-slate-100 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-2">
+                <button onclick="closeProfileModal()" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700">Cancel</button>
+                <button onclick="saveProfile()" class="px-5 py-2 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD EXAM MODAL -->
+    <div id="addExamModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-lg">Add New Exam Subject</h3>
+                <button onclick="closeAddExamModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Subject Name</label>
+                    <input type="text" id="newExamTitle" placeholder="e.g. Data Structures & C" class="w-full bg-slate-950 text-slate-100 placeholder-slate-500 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Exam Date & Time</label>
+                    <input type="datetime-local" id="newExamDate" class="w-full bg-slate-950 text-slate-100 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Initial Syllabus Modules (Comma separated)</label>
+                    <input type="text" id="newExamModules" placeholder="Module 1: Pointers, Module 2: Arrays" class="w-full bg-slate-950 text-slate-100 placeholder-slate-500 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 pt-2">
+                <button onclick="closeAddExamModal()" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-800 text-slate-300">Cancel</button>
+                <button onclick="createExam()" class="px-5 py-2 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow">Add Exam</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD TASK MODAL -->
+    <div id="addTaskModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-lg">Add New Task</h3>
+                <button onclick="closeAddTaskModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Task Description</label>
+                    <input type="text" id="newTaskTitle" placeholder="e.g. Complete C pointer lab assignment" class="w-full bg-slate-950 text-slate-100 placeholder-slate-500 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Priority</label>
+                    <select id="newTaskPriority" class="w-full bg-slate-950 text-slate-100 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="High">High Priority</option>
+                        <option value="Medium" selected>Medium Priority</option>
+                        <option value="Low">Low Priority</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 pt-2">
+                <button onclick="closeAddTaskModal()" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-800 text-slate-300">Cancel</button>
+                <button onclick="createTask()" class="px-5 py-2 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow">Add Task</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD RESOURCE MODAL -->
+    <div id="addResourceModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-lg">Add Vault Resource</h3>
+                <button onclick="closeAddResourceModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Resource Title</label>
+                    <input type="text" id="newResourceTitle" placeholder="e.g. Operating Systems Lecture Notes PDF" class="w-full bg-slate-950 text-slate-100 placeholder-slate-500 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Category</label>
+                    <input type="text" id="newResourceCategory" placeholder="e.g. PDF Notes / GitHub Repo" class="w-full bg-slate-950 text-slate-100 placeholder-slate-500 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Link URL</label>
+                    <input type="text" id="newResourceUrl" placeholder="https://..." class="w-full bg-slate-950 text-slate-100 placeholder-slate-500 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 pt-2">
+                <button onclick="closeAddResourceModal()" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-800 text-slate-300">Cancel</button>
+                <button onclick="createResource()" class="px-5 py-2 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow">Add Resource</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div id="settingsModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-lg">App Settings & Data</h3>
+                <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <p class="text-xs text-slate-400">Manage your local storage data or reset app defaults.</p>
+            <div class="space-y-3 pt-2">
+                <button onclick="exportData()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 py-2.5 rounded-xl text-sm font-medium flex items-center justify-center gap-2">
+                    <i data-lucide="download" class="w-4 h-4"></i> Export Backup JSON
+                </button>
+                <button onclick="resetData()" class="w-full bg-red-900/30 hover:bg-red-900/50 text-red-300 border border-red-800/50 py-2.5 rounded-xl text-sm font-medium flex items-center justify-center gap-2">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i> Reset All Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Default State & LocalStorage initialization
+        let appData = JSON.parse(localStorage.getItem('studypulse_data')) || {
+            profile: {
+                name: "Shivansh Sharma",
+                roll: "124396",
+                branch: "B.Tech CSE KPMG"
+            },
+            exams: [
+                {
+                    id: 1,
+                    title: "Operating Systems & System Programming",
+                    date: "2026-11-15T14:50",
+                    modules: [
+                        { id: 101, title: "Module 1: Process Management & CPU Scheduling", completed: true },
+                        { id: 102, title: "Module 2: Deadlocks & Synchronization", completed: true },
+                        { id: 103, title: "Module 3: Virtual Memory & Page Replacement", completed: false }
+                    ]
+                },
+                {
+                    id: 2,
+                    title: "English & Professional Communication",
+                    date: "2026-11-03T20:21",
+                    modules: [
+                        { id: 201, title: "Module 1: Fundamentals & Basics", completed: false },
+                        { id: 202, title: "Module 2: Advanced Practice Concepts", completed: false }
+                    ]
+                },
+                {
+                    id: 3,
+                    title: "Data Structures & C Programming",
+                    date: "2026-11-20T10:00",
+                    modules: [
+                        { id: 301, title: "Module 1: Pointers & Dynamic Memory", completed: true },
+                        { id: 302, title: "Module 2: Linked Lists & Trees", completed: false }
+                    ]
+                }
+            ],
+            tasks: [
+                { id: 1, title: "Complete StudyPulse GitHub deployment setup", priority: "High", completed: false }
+            ],
+            vault: [
+                { id: 1, title: "Operating Systems Lab Manual", category: "PDF Notes", url: "#" },
+                { id: 2, title: "C Programming Pointer Lab Solutions", category: "Code Snippets", url: "#" },
+                { id: 3, title: "KPMG Project Proposal Sheet", category: "Spreadsheet", url: "#" },
+                { id: 4, title: "English Presentation Deck", category: "Slides", url: "#" }
+            ],
+            notes: "StudyPulse End-Sem Project Notes:\n- Roll No: 124396\n- University: CGC University Mohali (Jhanjheri campus)\n- Tech Stack: Single-file HTML/CSS/JS + LocalStorage",
+            focusMinutes: 25
+        };
+
+        function saveData() {
+            localStorage.setItem('studypulse_data', JSON.stringify(appData));
+            updateUI();
+        }
+
+        // DOM Loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            loadProfileToUI();
+            updateUI();
+            document.getElementById('notesArea').value = appData.notes;
+        });
+
+        // Tab Navigation
+        function switchTab(tabId) {
+            const tabs = ['overview', 'exams', 'tasks', 'focus', 'vault', 'notes'];
+            tabs.forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                const navBtn = document.getElementById(`nav-${t}`);
+                if(navBtn) {
+                    navBtn.classList.remove('text-indigo-400');
+                    navBtn.classList.add('text-slate-400');
+                }
+            });
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if(activeNav) {
+                activeNav.classList.remove('text-slate-400');
+                activeNav.classList.add('text-indigo-400');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Theme Toggle
+        let isDarkMode = true;
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            if(isDarkMode) {
+                html.classList.add('dark');
+                icon.setAttribute('data-lucide', 'moon');
+            } else {
+                html.classList.remove('dark');
+                icon.setAttribute('data-lucide', 'sun');
+            }
+            lucide.createIcons();
+        }
+
+        // Profile Modal
+        function openProfileModal() {
+            document.getElementById('profileNameInput').value = appData.profile.name;
+            document.getElementById('profileRollInput').value = appData.profile.roll;
+            document.getElementById('profileBranchInput').value = appData.profile.branch;
+            document.getElementById('previewName').innerText = appData.profile.name;
+            document.getElementById('modalAvatarPreview').innerText = appData.profile.name.charAt(0).toUpperCase();
+            document.getElementById('profileModal').classList.remove('hidden');
+        }
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.add('hidden');
+        }
+        function saveProfile() {
+            appData.profile.name = document.getElementById('profileNameInput').value;
+            appData.profile.roll = document.getElementById('profileRollInput').value;
+            appData.profile.branch = document.getElementById('profileBranchInput').value;
+            saveData();
+            closeProfileModal();
+            loadProfileToUI();
+        }
+        function loadProfileToUI() {
+            const name = appData.profile.name;
+            const initial = name.charAt(0).toUpperCase();
+            document.getElementById('userAvatarInitial').innerText = initial;
+            document.getElementById('headerSubtitle').innerText = `${appData.profile.branch} • Roll: ${appData.profile.roll}`;
+            document.getElementById('welcomeTitle').innerText = `Welcome back, ${name.split(' ')[0]}!`;
+        }
+
+        // Update All UI components
+        function updateUI() {
+            // Stats
+            const pendingTasks = appData.tasks.filter(t => !t.completed).length;
+            document.getElementById('statTaskCount').innerText = pendingTasks;
+            document.getElementById('badgeTaskCount').innerText = pendingTasks;
+            document.getElementById('statExamCount').innerText = appData.exams.length;
+            document.getElementById('statFocusMinutes').innerText = appData.focusMinutes + 'm';
+            document.getElementById('statVaultCount').innerText = appData.vault.length;
+
+            renderExams();
+            renderTasks();
+            renderVault();
+            renderOverviewLists();
+            lucide.createIcons();
+        }
+
+        // Render Exams & Dynamic Syllabus Modules
+        function renderExams() {
+            const container = document.getElementById('examsContainer');
+            container.innerHTML = '';
+
+            appData.exams.forEach(exam => {
+                const total = exam.modules.length;
+                const completed = exam.modules.filter(m => m.completed).length;
+                const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+                let modulesHtml = exam.modules.map(mod => `
+                    <div class="flex items-center justify-between bg-slate-950/60 border border-slate-800/80 px-3 py-2 rounded-xl text-sm">
+                        <label class="flex items-center gap-3 cursor-pointer flex-1">
+                            <input type="checkbox" ${mod.completed ? 'checked' : ''} onchange="toggleModule(${exam.id}, ${mod.id})" class="w-4 h-4 rounded border-slate-700 bg-slate-900 text-indigo-600 focus:ring-indigo-500">
+                            <span class="${mod.completed ? 'line-through text-slate-500' : 'text-slate-200'}">${mod.title}</span>
+                        </label>
+                        <button onclick="deleteModule(${exam.id}, ${mod.id})" class="text-slate-500 hover:text-red-400 p-1" title="Delete Topic"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                    </div>
+                `).join('');
+
+                const card = document.createElement('div');
+                card.className = 'bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-4';
+                card.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-100">${exam.title}</h3>
+                            <p class="text-xs text-slate-400 mt-0.5"><i data-lucide="calendar" class="w-3.5 h-3.5 inline mr-1"></i> ${new Date(exam.date).toLocaleString()}</p>
+                        </div>
+                        <button onclick="deleteExam(${exam.id})" class="text-slate-500 hover:text-red-400 p-1.5"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-xs text-slate-400 font-medium">
+                            <span>Syllabus Modules</span>
+                            <span>${completed}/${total} (${pct}%)</span>
+                        </div>
+                        <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
+                            <div class="bg-indigo-600 h-full transition-all duration-300" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 pt-2">
+                        ${modulesHtml}
+                    </div>
+
+                    <div class="flex gap-2 pt-2">
+                        <input type="text" id="newModInput-${exam.id}" placeholder="Add syllabus topic..." class="flex-1 bg-slate-950 text-slate-100 placeholder-slate-500 border border-slate-800 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <button onclick="addModule(${exam.id})" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-2 rounded-xl text-xs font-semibold shadow">Add Topic</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Exam Actions
+        function openAddExamModal() { document.getElementById('addExamModal').classList.remove('hidden'); }
+        function closeAddExamModal() { document.getElementById('addExamModal').classList.add('hidden'); }
+        function createExam() {
+            const title = document.getElementById('newExamTitle').value.trim();
+            const date = document.getElementById('newExamDate').value;
+            const modText = document.getElementById('newExamModules').value.trim();
+            if(!title) return alert('Please enter an exam title.');
+
+            let modules = [];
+            if(modText) {
+                modules = modText.split(',').map((m, idx) => ({ id: Date.now() + idx, title: m.trim(), completed: false }));
+            } else {
+                modules = [{ id: Date.now(), title: "Module 1: Core Fundamentals", completed: false }];
+            }
+
+            appData.exams.push({ id: Date.now(), title, date: date || new Date().toISOString(), modules });
+            saveData();
+            closeAddExamModal();
+            document.getElementById('newExamTitle').value = '';
+            document.getElementById('newExamModules').value = '';
+        }
+        function deleteExam(id) {
+            appData.exams = appData.exams.filter(e => e.id !== id);
+            saveData();
+        }
+        function toggleModule(examId, modId) {
+            const exam = appData.exams.find(e => e.id === examId);
+            if(exam) {
+                const mod = exam.modules.find(m => m.id === modId);
+                if(mod) mod.completed = !mod.completed;
+                saveData();
+            }
+        }
+        function addModule(examId) {
+            const input = document.getElementById(`newModInput-${examId}`);
+            const val = input.value.trim();
+            if(!val) return;
+            const exam = appData.exams.find(e => e.id === examId);
+            if(exam) {
+                exam.modules.push({ id: Date.now(), title: val, completed: false });
+                saveData();
+            }
+        }
+        function deleteModule(examId, modId) {
+            const exam = appData.exams.find(e => e.id === examId);
+            if(exam) {
+                exam.modules = exam.modules.filter(m => m.id !== modId);
+                saveData();
+            }
+        }
+
+        // Render Tasks
+        let currentTaskFilter = 'all';
+        function filterTasks(filter) {
+            currentTaskFilter = filter;
+            ['all', 'pending', 'completed'].forEach(f => {
+                const btn = document.getElementById(`filter-${f}`);
+                if(f === filter) {
+                    btn.className = "px-4 py-1.5 rounded-lg text-sm font-medium bg-indigo-600 text-white";
+                } else {
+                    btn.className = "px-4 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700";
+                }
+            });
+            renderTasks();
+        }
+        function renderTasks() {
+            const container = document.getElementById('tasksContainer');
+            container.innerHTML = '';
+
+            let filtered = appData.tasks;
+            if(currentTaskFilter === 'pending') filtered = appData.tasks.filter(t => !t.completed);
+            if(currentTaskFilter === 'completed') filtered = appData.tasks.filter(t => t.completed);
+
+            if(filtered.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-slate-500 text-sm">No tasks found.</div>`;
+                return;
+            }
+
+            filtered.forEach(task => {
+                const item = document.createElement('div');
+                item.className = 'bg-slate-900 border border-slate-800 p-4 rounded-xl flex items-center justify-between shadow';
+                item.innerHTML = `
+                    <label class="flex items-center gap-3 cursor-pointer flex-1">
+                        <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})" class="w-5 h-5 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-indigo-500">
+                        <span class="${task.completed ? 'line-through text-slate-500' : 'text-slate-200'} font-medium">${task.title}</span>
+                    </label>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs px-2.5 py-1 rounded-full font-semibold ${task.priority === 'High' ? 'bg-red-500/20 text-red-300 border border-red-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'}">${task.priority}</span>
+                        <button onclick="deleteTask(${task.id})" class="text-slate-500 hover:text-red-400 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+        function openAddTaskModal() { document.getElementById('addTaskModal').classList.remove('hidden'); }
+        function closeAddTaskModal() { document.getElementById('addTaskModal').classList.add('hidden'); }
+        function createTask() {
+            const title = document.getElementById('newTaskTitle').value.trim();
+            const priority = document.getElementById('newTaskPriority').value;
+            if(!title) return;
+            appData.tasks.push({ id: Date.now(), title, priority, completed: false });
+            saveData();
+            closeAddTaskModal();
+            document.getElementById('newTaskTitle').value = '';
+        }
+        function toggleTask(id) {
+            const t = appData.tasks.find(task => task.id === id);
+            if(t) { t.completed = !t.completed; saveData(); }
+        }
+        function deleteTask(id) {
+            appData.tasks = appData.tasks.filter(task => task.id !== id);
+            saveData();
+        }
+
+        // Pomodoro Timer Logic
+        let timerInterval = null;
+        let timeLeft = 25 * 60;
+        let isTimerRunning = false;
+        let currentMode = 'pomodoro';
+
+        function setFocusMode(mode) {
+            currentMode = mode;
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            document.getElementById('timerToggleBtn').innerHTML = `<i data-lucide="play" class="w-5 h-5"></i> <span id="timerBtnText">Start Focus</span>`;
+
+            ['pomodoro', 'shortBreak', 'longBreak'].forEach(m => {
+                const btn = document.getElementById(`mode-${m}`);
+                if(m === mode) {
+                    btn.className = "flex-1 py-2 rounded-lg text-xs font-semibold bg-indigo-600 text-white transition";
+                } else {
+                    btn.className = "flex-1 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition";
+                }
+            });
+
+            if(mode === 'pomodoro') timeLeft = 25 * 60;
+            if(mode === 'shortBreak') timeLeft = 5 * 60;
+            if(mode === 'longBreak') timeLeft = 15 * 60;
+            updateTimerDisplay();
+            lucide.createIcons();
+        }
+
+        function toggleTimer() {
+            if(isTimerRunning) {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                document.getElementById('timerToggleBtn').innerHTML = `<i data-lucide="play" class="w-5 h-5"></i> <span id="timerBtnText">Resume</span>`;
+            } else {
+                isTimerRunning = true;
+                document.getElementById('timerToggleBtn').innerHTML = `<i data-lucide="pause" class="w-5 h-5"></i> <span id="timerBtnText">Pause</span>`;
+                timerInterval = setInterval(() => {
+                    if(timeLeft > 0) {
+                        timeLeft--;
+                        updateTimerDisplay();
+                    } else {
+                        clearInterval(timerInterval);
+                        isTimerRunning = false;
+                        alert('Focus session completed!');
+                        appData.focusMinutes += 25;
+                        saveData();
+                    }
+                }, 1000);
+            }
+            lucide.createIcons();
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            if(currentMode === 'pomodoro') timeLeft = 25 * 60;
+            if(currentMode === 'shortBreak') timeLeft = 5 * 60;
+            if(currentMode === 'longBreak') timeLeft = 15 * 60;
+            updateTimerDisplay();
+            document.getElementById('timerToggleBtn').innerHTML = `<i data-lucide="play" class="w-5 h-5"></i> <span id="timerBtnText">Start Focus</span>`;
+            lucide.createIcons();
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timeLeft / 60);
+            const secs = timeLeft % 60;
+            document.getElementById('timerDisplay').innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Render Vault
+        function renderVault() {
+            const container = document.getElementById('vaultContainer');
+            container.innerHTML = '';
+            appData.vault.forEach(res => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-900 border border-slate-800 p-5 rounded-xl shadow flex flex-col justify-between space-y-4';
+                card.innerHTML = `
+                    <div>
+                        <span class="text-xs bg-indigo-500/20 text-indigo-300 px-2.5 py-1 rounded-full font-semibold border border-indigo-500/30">${res.category}</span>
+                        <h4 class="font-bold text-base mt-2 text-slate-100">${res.title}</h4>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+                        <a href="${res.url}" target="_blank" class="text-xs font-semibold text-indigo-400 hover:underline flex items-center gap-1">Open Resource <i data-lucide="external-link" class="w-3.5 h-3.5"></i></a>
+                        <button onclick="deleteResource(${res.id})" class="text-slate-500 hover:text-red-400 p-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+        function openAddResourceModal() { document.getElementById('addResourceModal').classList.remove('hidden'); }
+        function closeAddResourceModal() { document.getElementById('addResourceModal').classList.add('hidden'); }
+        function createResource() {
+            const title = document.getElementById('newResourceTitle').value.trim();
+            const category = document.getElementById('newResourceCategory').value.trim();
+            const url = document.getElementById('newResourceUrl').value.trim();
+            if(!title) return;
+            appData.vault.push({ id: Date.now(), title, category: category || 'General', url: url || '#' });
+            saveData();
+            closeAddResourceModal();
+            document.getElementById('newResourceTitle').value = '';
+            document.getElementById('newResourceCategory').value = '';
+            document.getElementById('newResourceUrl').value = '';
+        }
+        function deleteResource(id) {
+            appData.vault = appData.vault.filter(r => r.id !== id);
+            saveData();
+        }
+
+        // Notes AutoSave
+        function autoSaveNotes() {
+            const text = document.getElementById('notesArea').value;
+            appData.notes = text;
+            localStorage.setItem('studypulse_data', JSON.stringify(appData));
+            document.getElementById('notesStatus').innerText = "Auto-saved just now";
+            setTimeout(() => { document.getElementById('notesStatus').innerText = "Auto-saved to local storage"; }, 2000);
+        }
+        function saveNotesManually() {
+            autoSaveNotes();
+            alert('Notes successfully saved!');
+        }
+
+        // Overview Lists
+        function renderOverviewLists() {
+            const exList = document.getElementById('overviewExamsList');
+            exList.innerHTML = appData.exams.slice(0, 2).map(e => `
+                <div class="bg-slate-950/60 border border-slate-800 p-3 rounded-xl flex items-center justify-between text-sm">
+                    <span class="font-medium text-slate-200">${e.title}</span>
+                    <span class="text-xs text-indigo-400">${new Date(e.date).toLocaleDateString()}</span>
+                </div>
+            `).join('') || '<p class="text-xs text-slate-500">No upcoming exams.</p>';
+
+            const taskList = document.getElementById('overviewTasksList');
+            taskList.innerHTML = appData.tasks.slice(0, 2).map(t => `
+                <div class="bg-slate-950/60 border border-slate-800 p-3 rounded-xl flex items-center justify-between text-sm">
+                    <span class="font-medium ${t.completed ? 'line-through text-slate-500' : 'text-slate-200'}">${t.title}</span>
+                    <span class="text-xs px-2 py-0.5 rounded ${t.priority === 'High' ? 'bg-red-500/20 text-red-300' : 'bg-amber-500/20 text-amber-300'}">${t.priority}</span>
+                </div>
+            `).join('') || '<p class="text-xs text-slate-500">No pending tasks.</p>';
+        }
+
+        // Settings Modals
+        function openSettingsModal() { document.getElementById('settingsModal').classList.remove('hidden'); }
+        function closeSettingsModal() { document.getElementById('settingsModal').classList.add('hidden'); }
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", "studypulse_backup.json");
+            dlAnchorElem.click();
+        }
+        function resetData() {
+            if(confirm('Are you sure you want to reset all app data to defaults?')) {
+                localStorage.removeItem('studypulse_data');
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
