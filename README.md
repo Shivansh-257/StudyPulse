@@ -1,68 +1,74 @@
-# StudyPulse — Student Productivity & Academic Tool
+# ⚡ StudyPulse — Student Academic Operations & Productivity Suite
 
-> **StudyPulse** is a simple website that helps students keep track of their subjects, exam syllabus, daily tasks, and study timer all in one place.
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-indigo?style=for-the-badge&logo=github)](https://Shivansh-257.github.io/StudyPulse/)
+[![Tech Stack](https://img.shields.io/badge/Tech%20Stack-HTML5%20%7C%20TailwindCSS%20%7C%20JS-blue?style=for-the-badge)](https://developer.mozilla.org/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
+> **StudyPulse** is an all-in-one, responsive, single-file web application designed to centralize student academic operations, exam syllabus tracking, daily task deliverables, and deep-work focus sessions into a single distraction-free dashboard.
 
 ---
 
-## 📌 Project Details
+## 📌 Project Overview
 
-* **Project Title:** StudyPulse
+* **Project Title:** StudyPulse (Student Academic Operations & Productivity Suite)
 * **Student Name:** Shivansh Sharma
 * **Roll No:** 124396
-* **Program:** B.Tech Computer Science and Engineering (KPMG) — 1st Year (Semester 1)
-* **College:** CGC University Mohali, Jhanjheri Campus
+* **Program:** B.Tech Computer Science and Engineering (in Association with KPMG) — 1st Year (Semester 1)
+* **Institution:** CGC University Mohali, Jhanjheri Campus
 * **Project Type:** Web Development
-* **Goal:** SDG 4 — Quality Education
+* **SDG Alignment:** **SDG 4 — Quality Education**
 
 ---
 
-## ✨ What It Does
+## ✨ Features & Functionalities
 
-1. **Overview Dashboard**
-   - Shows your pending tasks, upcoming exams, and focus time at a glance.
+1. **📊 Overview Dashboard**
+   - Real-time academic metrics (Pending Tasks, Active Exams, Focus Logged, Vault Resources).
+   - Quick-access priority widgets for immediate deadlines.
 
-2. **Exams & Syllabus**
-   - Track exam dates and check off syllabus topics as you finish them with live progress bars.
+2. **🎓 Exams & Syllabus Hub**
+   - Dynamic countdown trackers for upcoming end-semester and mid-term examinations.
+   - Interactive syllabus module checklists with live progress percentage bars.
+   - Dynamic topic creation and deletion per subject.
 
-3. **Task Manager**
-   - Add your assignments and daily tasks, set priorities, and mark them done.
+3. **✅ Deliverables & Task Manager**
+   - Categorized task board with priority tags (`High`, `Medium`, `Low`).
+   - Quick filters (`All`, `Pending`, `Completed`).
 
-4. **Pomodoro Focus Timer**
-   - Use a built-in timer for study sessions (25 minutes work, 5 or 15 minute breaks).
+4. **⏱️ Pomodoro Focus Hub**
+   - Built-in timer supporting **Pomodoro (25m)**, **Short Break (5m)**, and **Long Break (15m)** modes.
+   - Automatic focus logging to track daily productivity.
 
-5. **Academic Vault**
-   - Save links to your lecture notes, PDFs, and code files.
+5. **📁 Academic Vault**
+   - Categorized repository for quick access to lecture PDFs, lab manuals, code snippets, and presentation decks.
 
-6. **Quick Notes**
-   - A scratchpad that auto-saves your notes right in your browser.
+6. **📝 Quick Notes & Scratchpad**
+   - Auto-saving scratchpad with dark mode contrast for lecture notes and code snippets.
 
-7. **Profile & Theme**
-   - Click your avatar to update your details, and switch between light and dark mode.
-
----
-
-## 🛠️ Tech Used
-
-- **Frontend:** HTML5, Tailwind CSS, JavaScript
-- **Storage:** Browser LocalStorage (saves your data right on your device)
-- **Hosting:** GitHub Pages
+7. **👤 Avatar-Triggered Profile Modal & Customization**
+   - Customizable profile details (Name, Roll Number, Branch) accessible via top-left header avatar.
+   - Seamless Light/Dark mode toggle with complete local persistence (`LocalStorage`).
 
 ---
 
-## 🚀 How to Run It
+## 🛠️ Tech Stack & Architecture
 
-### 1. View Online
-Check out the live website here:
-👉 **[StudyPulse Live Link](https://Shivansh-257.github.io/StudyPulse/)**
-
-### 2. Run on Your Laptop
-1. Download or clone the project folder.
-2. Open `index.html` in any web browser.
+- **Frontend:** HTML5, Tailwind CSS (via CDN)
+- **Icons:** Lucide Icons Library
+- **State Management:** Native JavaScript (`ES6+`)
+- **Data Persistence:** Browser `LocalStorage` (Zero backend required, 100% privacy and offline functionality)
+- **Deployment:** GitHub Pages
 
 ---
 
-## ⚙️ Data & Backup
+## 🚀 Getting Started & Usage
 
-- Your tasks and notes save automatically.
-- You can export a backup JSON file or reset data anytime using the settings button.
+### 1. View Live Online
+Simply visit the live hosted URL:
+👉 **[StudyPulse Live Dashboard](https://Shivansh-257.github.io/StudyPulse/)**
 
+### 2. Run Locally on Laptop
+No server setup or installation required!
+1. Clone or download this repository:
+   ```bash
+   git clone [https://github.com/Shivansh-257/StudyPulse.git](https://github.com/Shivansh-257/StudyPulse.git)
